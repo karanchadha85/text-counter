@@ -24,7 +24,7 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 @EnableWebMvc
 @RequestMapping("/counter-api")
 public class ApiSearchController {
-	final static Logger logger = Logger.getLogger(ApiSearchController.class);
+	private final static Logger logger = Logger.getLogger(ApiSearchController.class);
     
 	@Autowired
 	String passageText;
@@ -50,7 +50,7 @@ public class ApiSearchController {
         	((JSONArray)resultJson.get("counts")).put(new JSONObject().put(s, j));
         }
         
-        logger.debug("Search API result - " + resultJson.toString());
+        logger.debug("KC001" + " - " + resultJson.toString());
         return resultJson.toString();
     }
 
@@ -79,6 +79,7 @@ public class ApiSearchController {
     	{
     		result += entry.getKey() + "|" + entry.getValue() + "\n";
     	}
+    	logger.debug("KC002");
     	return result;
     }
 }

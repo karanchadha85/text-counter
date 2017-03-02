@@ -10,6 +10,13 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+	
+    @Autowired
+    private RestAuthenticationEntryPoint authenticationEntryPoint;
+    
+    @Autowired
+    private RestAccessDeniedHandler accessDeniedHandler;
+    
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
         auth.inMemoryAuthentication().withUser("tom").password("123456").roles("USER");
@@ -20,10 +27,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 
-        http.csrf().disable().authorizeRequests()
-                .antMatchers("/counter-api/**").access("hasRole('ADMIN')")
-                .and().httpBasic()
-                .realmName("Employees via Http Basic");
-
+        http.csrf().disable().authorizeRequests().antMatchers("/counter-api/**").access("hasRole('ADMIN')")
+        		.and().httpBasic().realmName("Employees via Http Basic")
+        		.and().exceptionHandling().authenticationEntryPoint(authenticationEntryPoint).accessDeniedHandler(accessDeniedHandler);
     }
 }
